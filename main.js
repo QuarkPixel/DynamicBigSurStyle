@@ -1,7 +1,8 @@
 BSSImageConfig = {
     id: "BigSurStyleDisplay",
     color: ["#2780c2", "#FFFFFF"], //"main","ornament" #ONLY HEX
-    graphics_shape: "square", //triangle|square
+    blur_radius: 120,
+    graphics_shape: "triangle", //triangle|square
     graphics_num: 40,
     discreteValues: 256,
     speed: 1,
@@ -43,23 +44,28 @@ function BSSRender() {
             ctx.fillStyle =
                 BSS_Ornament + (Math.floor(Math.random() * 41) + 1) / 100 + ")"
             switch (BSSImageConfig.graphics_shape) {
-                case "triangle":
+                case "triangle": //三角形
+                    //确定第一个点（大体位置）
+                    let firstPoint = [
+                        Math.floor(Math.random() * width),
+                        Math.floor(Math.random() * height),
+                    ]
+
+                    //绘制
                     ctx.beginPath()
-                    ctx.moveTo(
-                        Math.floor(Math.random() * width),
-                        Math.floor(Math.random() * height)
-                    )
-                    ctx.lineTo(
-                        Math.floor(Math.random() * width),
-                        Math.floor(Math.random() * height)
-                    )
-                    ctx.lineTo(
-                        Math.floor(Math.random() * width),
-                        Math.floor(Math.random() * height)
-                    )
+                    ctx.moveTo(firstPoint[0], firstPoint[1])
+                    ctx.lineTo(randomPosion(width, 0), randomPosion(height, 1))
+                    ctx.lineTo(randomPosion(width, 0), randomPosion(height, 1))
                     ctx.fill()
+                    function randomPosion(direction, num) {
+                        return (
+                            Math.floor(Math.random() * (direction * 0.8 + 1)) +
+                            firstPoint[num] -
+                            width * 0.4
+                        )
+                    }
                     break
-                case "square":
+                case "square": //正方形
                     //随机大小&位置
                     graphicsWidth =
                         (Math.floor(Math.random() * sizeRange[1]) +
@@ -86,5 +92,11 @@ function BSSRender() {
                     break
             }
         }
+
+        canvas.setAttribute(
+            "style",
+            "filter: blur(" + BSSImageConfig.blur_radius + "px)"
+        )
+        console.log("aaa")
     }
 }
