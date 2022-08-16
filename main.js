@@ -1,19 +1,51 @@
 BSSImageConfig = {
     id: "BigSurStyleDisplay",
-    color: ["#2780c2", "#FFFFFF"], //"main","ornament" #ONLY HEX
-    blur_radius: 120,
-    graphics_shape: "triangle", //triangle|square
-    graphics_num: 40,
+    size: [1500, 1500], //"width", "height"
+    color: ["#2780c2", "#FFFFFF"], //"main", "ornament" #ONLY HEX
+    blur_radius: 60, // Px
+    graphics_shape: "circle", //triangle|square|circle
+    graphics_num: 20,
     discreteValues: 256,
     speed: 1,
 }
 
-function BSSRender() {
-    //获取元素
-    let canvas = document.getElementById(BSSImageConfig.id)
+//设置父元素样式 & 激活函数
+if (document.getElementById(BSSImageConfig.id)) {
+    let canvasDiv = document.getElementById(BSSImageConfig.id)
 
-    let width = canvas.width
-    let height = canvas.height
+    // canvasDiv.setAttribute(
+    // "style",
+    // "background-color:" + BSSImageConfig.color[0] + ";overflow:hidden"
+    // )
+
+    canvasDiv.style["background-color"] = BSSImageConfig.color[0]
+    canvasDiv.style.overflow = "hidden"
+    canvasDiv.style.position = "relative"
+
+    let width = canvasDiv.clientWidth
+    let height = canvasDiv.clientHeight
+
+    canvasDiv.innerHTML =
+        "<canvas width=" +
+        width +
+        " height=" +
+        height +
+        " style=''></canvas><div style='width:" +
+        width +
+        "px;height:" +
+        height +
+        "px;position:absolute;top:0;left:0;backdrop-filter:blur(" +
+        BSSImageConfig.blur_radius +
+        "px);-webkit-backdrop-filter:blur(" +
+        BSSImageConfig.blur_radius +
+        "px)'></div>"
+
+    BSSRender(width, height)
+}
+
+function BSSRender(width, height) {
+    //获取元素
+    let canvas = document.getElementById(BSSImageConfig.id).childNodes[0]
 
     //创建变量
     let BSS_Ornament = "rgba("
@@ -32,17 +64,17 @@ function BSSRender() {
     if (canvas.getContext) {
         var ctx = canvas.getContext("2d")
 
-        //填充背景
-        ctx.fillStyle = BSSImageConfig.color[0]
-        ctx.fillRect(0, 0, width, height)
+        // //填充背景
+
+        let sizeRange = [width * 20, width * 40, height * 20, height * 40]
+        let averageSize = Math.sqrt(width * height) * 0.5
 
         //生成图形
-        let sizeRange = [width * 20, width * 40, height * 20, height * 40]
-        // let sizeBase = [width*.5, height*.5] 0|width
         for (let i = 0; i < BSSImageConfig.graphics_num; i++) {
             //随机颜色
             ctx.fillStyle =
-                BSS_Ornament + (Math.floor(Math.random() * 41) + 1) / 100 + ")"
+                BSS_Ornament + (Math.floor(Math.random() * 10) + 1) / 100 + ")"
+
             switch (BSSImageConfig.graphics_shape) {
                 case "triangle": //三角形
                     //确定第一个点（大体位置）
@@ -90,13 +122,25 @@ function BSSRender() {
                         graphicsHeight
                     )
                     break
+                case "circle": //圆形
+                    ctx.beginPath()
+                    ctx.arc(
+                        Math.floor(Math.random() * width),
+                        Math.floor(Math.random() * height),
+                        Math.floor(Math.random() * averageSize),
+                        0,
+                        2 * Math.PI
+                    )
+                    // ctx.fillStyle = "#ff0" //设置填充颜色
+                    ctx.fill() //开始填充
+                    break
             }
         }
 
-        canvas.setAttribute(
-            "style",
-            "filter: blur(" + BSSImageConfig.blur_radius + "px)"
-        )
-        console.log("aaa")
+        // canvas.setAttribute(
+        //     "style",
+        //     "filter: blur(" + BSSImageConfig.blur_radius + "px)"
+        // )
+        // console.log("aaa")
     }
 }
