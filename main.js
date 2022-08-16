@@ -1,13 +1,13 @@
 BSSImageConfig = {
     id: "BigSurStyleDisplay",
-    // size: [1500, 1500], //[1500]"width", "height"
     color: ["#2780c2", "#FFFFFF"], //[#2780c2][#FFFFFF] {#HEX}
-    blur_radius: 0, //[60],{Px}
+    blur_radius: 30, //[30] {Px}
     graphics_shape: "triangle", //triangle|square|circle
-    graphics_num: 100, //[100]
+    graphics_num: 20, //[20]
     graphics_size: 0.5, //[0.5] (<1)
     graphics_opacity: 0.3, //[0.3]
-    graphics_speed: 0.8, //[0.8]
+    graphics_speed: 1, //[1]
+    fps: 12, //[12]
 }
 
 //设置父元素样式 & 激活函数
@@ -49,6 +49,9 @@ function BSSRender(width, height) {
     let canvas = document.getElementById(BSSImageConfig.id).childNodes[0]
 
     ////数据处理
+    //速度变量处理
+    DOUBLEgraphics_speed = BSSImageConfig.graphics_speed * 2
+    // BSSImageConfig.graphics_speed *= 2
     //创建变量
     let BSS_Ornament = "rgba("
 
@@ -153,16 +156,20 @@ function BSSRender(width, height) {
         //初始化若干个圆
         for (var i = 0; i < BSSImageConfig.graphics_num; i++) {
             //随机颜色
-            ctx.fillStyle =
-                BSS_Ornament +
-                Math.random() * BSSImageConfig.graphics_opacity +
-                ")"
+            // ctx.fillStyle =
+            //     BSS_Ornament +
+            //     Math.floor(
+            //         Math.random() * (BSSImageConfig.graphics_opacity * 100 + 1)
+            //     ) /
+            //         100 +
+            //     ")"
+            // console.log(ctx.fillStyle)
+            console.log(Math.random() * BSSImageConfig.graphics_speed)
 
             //随机半径
             circle_radius = Math.floor(Math.random() * (minimumLength / 2 + 1))
 
             circles[i] = {
-                //radius+1|width-radius-1
                 x:
                     Math.floor(
                         Math.random() * (width - 2 * circle_radius + 1)
@@ -172,11 +179,24 @@ function BSSRender(width, height) {
                         Math.random() * (height - 2 * circle_radius + 1)
                     ) + circle_radius,
                 //速度向量
-                velocityX: Math.random() * BSSImageConfig.graphics_speed,
-                velocityY: Math.random() * BSSImageConfig.graphics_speed,
+                velocityX:
+                    Math.random() * DOUBLEgraphics_speed -
+                    BSSImageConfig.graphics_speed,
+                velocityY:
+                    Math.random() * DOUBLEgraphics_speed -
+                    BSSImageConfig.graphics_speed,
                 // radius: 50 * Math.random(),
                 radius: circle_radius,
                 //toFixed() 方法可把 Number 四舍五入为指定小数位数的数字
+                color:
+                    BSS_Ornament +
+                    Math.floor(
+                        Math.random() *
+                            (BSSImageConfig.graphics_opacity * 100 + 1)
+                    ) /
+                        100 +
+                    ")",
+
                 // color: 'rgba(255,0,255,' + (Math.floor(Math.random() * 10) + 1) / 100 + ")"
             }
         }
@@ -200,7 +220,7 @@ function BSSRender(width, height) {
                 ctx.fill()
                 adjustPosition(circle)
             })
-        }, 1000 / 60)
+        }, 1000 / BSSImageConfig.fps)
 
         //调整圆的位置坐标
         function adjustPosition(circle) {
