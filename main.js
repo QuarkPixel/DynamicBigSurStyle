@@ -1,13 +1,13 @@
 BSSImageConfig = {
     id: "BigSurStyleDisplay",
     color: ["#2780c2", "#FFFFFF"], //[#2780c2][#FFFFFF] {#HEX}
-    blur_radius: 0, //[30] {Px}
-    graphics_shape: "triangle", //triangle|square|circle
-    graphics_num: 20, //[20]
-    graphics_size: 0.9, //[0.5] (<1)
+    blur_radius: 40, //[40] {Px}
+    // graphics_shape: "triangle", //triangle|square|circle
+    graphics_num: 40, //[40]
+    graphics_size: 0.5, //[0.5] (<1)
     graphics_opacity: 0.3, //[0.3]
-    graphics_speed: 0.3, //[1]
-    fps: 1, //[12]
+    graphics_speed: 0.3, //[0.3]
+    fps: 6, //[6]
 }
 
 //设置父元素样式 & 激活函数
