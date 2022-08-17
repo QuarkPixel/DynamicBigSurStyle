@@ -1,13 +1,13 @@
 BSSImageConfig = {
     id: "BigSurStyleDisplay",
     color: ["#2780c2", "#FFFFFF"], //[#2780c2][#FFFFFF] {#HEX}
-    blur_radius: 30, //[30] {Px}
+    blur_radius: 0, //[30] {Px}
     graphics_shape: "triangle", //triangle|square|circle
     graphics_num: 20, //[20]
-    graphics_size: 0.5, //[0.5] (<1)
+    graphics_size: 0.9, //[0.5] (<1)
     graphics_opacity: 0.3, //[0.3]
-    graphics_speed: 1, //[1]
-    fps: 12, //[12]
+    graphics_speed: 0.3, //[1]
+    fps: 1, //[12]
 }
 
 //设置父元素样式 & 激活函数
@@ -49,7 +49,8 @@ function BSSRender(width, height) {
     MINgraphics_size = BSSImageConfig.graphics_size * 0.2 * minimumLength
     BSSImageConfig.graphics_opacity *= 0.5
     graphics_opacity_smaller = BSSImageConfig.graphics_opacity * 0.8
-    console.log(graphics_opacity_smaller)
+    BSSImageConfig.graphics_speed *= 5
+    console.log(BSSImageConfig.graphics_speed)
     //5m|m|||4m+1,m
     DOUBLEgraphics_speed = BSSImageConfig.graphics_speed * 2
     // BSSImageConfig.graphics_speed *= 2
