@@ -14,11 +14,6 @@ BSSImageConfig = {
 if (document.getElementById(BSSImageConfig.id)) {
     let canvasDiv = document.getElementById(BSSImageConfig.id)
 
-    // canvasDiv.setAttribute(
-    // "style",
-    // "background-color:" + BSSImageConfig.color[0] + ";overflow:hidden"
-    // )
-
     canvasDiv.style["background-color"] = BSSImageConfig.color[0]
     canvasDiv.style.overflow = "hidden"
     canvasDiv.style.position = "relative"
@@ -49,7 +44,13 @@ function BSSRender(width, height) {
     let canvas = document.getElementById(BSSImageConfig.id).childNodes[0]
 
     ////数据处理
-    //速度变量处理
+    let minimumLength
+    width > height ? (minimumLength = height / 2) : (minimumLength = width / 2)
+    MINgraphics_size = BSSImageConfig.graphics_size * 0.2 * minimumLength
+    BSSImageConfig.graphics_opacity *= 0.5
+    graphics_opacity_smaller = BSSImageConfig.graphics_opacity * 0.8
+    console.log(graphics_opacity_smaller)
+    //5m|m|||4m+1,m
     DOUBLEgraphics_speed = BSSImageConfig.graphics_speed * 2
     // BSSImageConfig.graphics_speed *= 2
     //创建变量
@@ -70,8 +71,6 @@ function BSSRender(width, height) {
     // BSSImageConfig.graphics_opacity *= 255
 
     //获取最小半径
-    let minimumLength
-    width > height ? (minimumLength = height / 2) : (minimumLength = width / 2)
 
     if (canvas.getContext) {
         var ctx = canvas.getContext("2d")
@@ -155,50 +154,54 @@ function BSSRender(width, height) {
 
         //初始化若干个圆
         for (var i = 0; i < BSSImageConfig.graphics_num; i++) {
-            //随机颜色
-            // ctx.fillStyle =
-            //     BSS_Ornament +
-            //     Math.floor(
-            //         Math.random() * (BSSImageConfig.graphics_opacity * 100 + 1)
-            //     ) /
-            //         100 +
-            //     ")"
-            // console.log(ctx.fillStyle)
-            console.log(Math.random() * BSSImageConfig.graphics_speed)
-
             //随机半径
-            circle_radius = Math.floor(Math.random() * (minimumLength / 2 + 1))
+            circle_radius =
+                Math.floor(Math.random() * (4 * MINgraphics_size + 1)) +
+                MINgraphics_size
 
-            circles[i] = {
-                x:
-                    Math.floor(
-                        Math.random() * (width - 2 * circle_radius + 1)
-                    ) + circle_radius,
-                y:
-                    Math.floor(
-                        Math.random() * (height - 2 * circle_radius + 1)
-                    ) + circle_radius,
-                //速度向量
-                velocityX:
-                    Math.random() * DOUBLEgraphics_speed -
-                    BSSImageConfig.graphics_speed,
-                velocityY:
-                    Math.random() * DOUBLEgraphics_speed -
-                    BSSImageConfig.graphics_speed,
-                // radius: 50 * Math.random(),
-                radius: circle_radius,
-                //toFixed() 方法可把 Number 四舍五入为指定小数位数的数字
-                color:
-                    BSS_Ornament +
-                    Math.floor(
-                        Math.random() *
-                            (BSSImageConfig.graphics_opacity * 100 + 1)
-                    ) /
-                        100 +
-                    ")",
+            //随机颜色
+            ;(ctx_color =
+                BSS_Ornament +
+                BSSImageConfig.graphics_opacity /
+                    (circle_radius / minimumLength + graphics_opacity_smaller) +
+                // Math.floor(
+                //     Math.random() * (BSSImageConfig.graphics_opacity * 100 + 1)
+                // ) /
+                //     100 +
+                ")"),
+                // console.log(ctx.fillStyle)
+                // console.log(
+                //     circle_radius / minimumLength +
+                //         "," +
+                //         width +
+                //         "," +
+                //         0.1 / (circle_radius / minimumLength + 0.1)
+                // )
 
-                // color: 'rgba(255,0,255,' + (Math.floor(Math.random() * 10) + 1) / 100 + ")"
-            }
+                (circles[i] = {
+                    x:
+                        Math.floor(
+                            Math.random() * (width - 2 * circle_radius + 1)
+                        ) + circle_radius,
+                    y:
+                        Math.floor(
+                            Math.random() * (height - 2 * circle_radius + 1)
+                        ) + circle_radius,
+                    //速度向量
+                    velocityX:
+                        Math.random() * DOUBLEgraphics_speed -
+                        BSSImageConfig.graphics_speed,
+                    velocityY:
+                        Math.random() * DOUBLEgraphics_speed -
+                        BSSImageConfig.graphics_speed,
+                    // radius: 50 * Math.random(),
+                    radius: circle_radius,
+                    //toFixed() 方法可把 Number 四舍五入为指定小数位数的数字
+                    color: ctx_color,
+
+                    // color: 'rgba(255,0,255,' + (Math.floor(Math.random() * 10) + 1) / 100 + ")"
+                })
+            // console.log(BSSImageConfig.graphics_opacity * 100 + 1)
         }
 
         //定时器
